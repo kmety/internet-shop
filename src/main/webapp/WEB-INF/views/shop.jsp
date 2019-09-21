@@ -5,7 +5,19 @@
     <title>Shop</title>
 </head>
 <body>
-    <h3>Welcome ${user.name}</h3>
+<c:choose>
+    <c:when test="${sessionScope.loggedInUser == null}">
+        <p>You entered as guest!</p>
+        <br/>
+    </c:when>
+    <c:otherwise>
+        You entered as ${sessionScope.loggedInUser.name}
+        <form action="logoff">
+            <button type="submit">Log off</button>
+        </form>
+        <br />
+    </c:otherwise>
+</c:choose>
 
     <table border="1">
         <tr>
@@ -17,13 +29,15 @@
             <tr>
                 <td>${item.name}</td>
                 <td>${item.price}</td>
-                <td><a href="addToBucket?item_id=${item.id}">Add</a></td>
+                <td><a href="user/addToBucket?item_id=${item.id}">Add</a></td>
             </tr>
         </c:forEach>
     </table>
+<br>
+    <a href="user/bucket">Show user's bucket</a>
     <br>
-    <a href="bucket">Show user's bucket</a>
+    <a href="user/showAllOrders">Show user's orders</a>
     <br>
-    <a href="showAllOrders">Show user's orders</a>
+    <a href="user/users">Users list</a>
 </body>
 </html>

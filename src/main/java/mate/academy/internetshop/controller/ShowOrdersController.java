@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
@@ -18,15 +17,13 @@ public class ShowOrdersController extends HttpServlet {
     private static OrderService orderService;
     @Inject
     private static UserService userService;
-    private static final Long userFromSessionId = 0L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        User user = userService.get(userFromSessionId);
-        List<Order> orders = user.getOrders();
-        req.setAttribute("user", user);
+        User user = (User) req.getSession().getAttribute("loggedInUser");
+        List<Order> orders = userService.get(user.getId()).getOrders();
         req.setAttribute("orders", orders);
-        req.getRequestDispatcher("WEB-INF/views/orders.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/orders.jsp").forward(req, resp);
     }
 }

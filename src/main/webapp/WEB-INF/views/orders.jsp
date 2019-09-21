@@ -5,7 +5,11 @@
     <title>Show orders</title>
 </head>
 <body>
-<h3>All orders of ${user.name}</h3>
+You entered as ${sessionScope.loggedInUser.name}
+<form action="../logoff">
+    <button type="submit">Log off</button>
+</form>
+<h3>All orders of ${sessionScope.loggedInUser.name}</h3>
 
 <table border="1">
     <tr>
@@ -26,7 +30,7 @@
 
 <a href="bucket">Show user's bucket</a>
 <br>
-<a href="shop">Return to the shop</a>
+<a href="../shop">Return to the shop</a>
 
 </body>
 </html>

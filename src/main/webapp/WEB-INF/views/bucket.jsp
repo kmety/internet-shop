@@ -5,27 +5,32 @@
     <title>Bucket</title>
 </head>
 <body>
-    <h3>${user.name}, welcome to your bucket</h3>
-    <table border="1">
+You entered as ${sessionScope.loggedInUser.name}
+<form action="../logoff">
+    <button type="submit">Log off</button>
+</form>
+<h3>${sessionScope.loggedInUser.name}, welcome to your bucket</h3>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Delete</th>
+    </tr>
+    <c:forEach var="item" items="${bucket.items}">
         <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Delete</th>
+            <td>${item.name}</td>
+            <td>${item.price}</td>
+            <td><a href="deleteFromBucket?item_id=${item.id}">Delete</a></td>
         </tr>
-        <c:forEach var="item" items="${bucket.items}">
-            <tr>
-                <td>${item.name}</td>
-                <td>${item.price}</td>
-                <td><a href="deleteFromBucket?bucket_id=${bucket.id}&item_id=${item.id}">Delete</a></td>
-            </tr>
-        </c:forEach>
-        <tr>
-            <td>Total</td>
-            <td>${totalCost}</td>
-            <td><a href="completeOrder?bucket_id=${bucket.id}">Buy</a></td>
-        </tr>
-    </table>
-    <br>
-    <a href="shop">Return to the shop</a>
+    </c:forEach>
+    <tr>
+        <td>Total</td>
+        <td>${totalCost}</td>
+        <td><a href="completeOrder">Buy</a></td>
+    </tr>
+</table>
+<br>
+<a href="../shop">Return to the shop</a>
+
 </body>
 </html>
