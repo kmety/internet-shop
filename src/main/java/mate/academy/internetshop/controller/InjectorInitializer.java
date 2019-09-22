@@ -12,6 +12,7 @@ public class InjectorInitializer implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         try {
             Injector.injectDependencies();
+            logger.info("Dependencies injected");
         } catch (IllegalAccessException e) {
             logger.error(e);
             throw new RuntimeException(e);

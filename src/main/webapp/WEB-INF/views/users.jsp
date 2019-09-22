@@ -5,6 +5,10 @@
     <title>Users list</title>
 </head>
 <body>
+You entered as ${sessionScope.loggedInUser.name}
+<form action="../logoff">
+    <button type="submit">Log off</button>
+</form>
 <h3>Users list:</h3>
 <table border="1">
     <tr>
@@ -27,7 +31,7 @@
     </c:forEach>
 </table>
 <hr>
-<a href="index">To the main page</a><br>
-<a href="registration">Register new user</a>
+<a href="../registration">Register new user</a><br>
+<a href="../index">To the main page</a>
 </body>
 </html>

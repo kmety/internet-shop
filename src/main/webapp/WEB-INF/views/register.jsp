@@ -29,7 +29,6 @@
 
             <button type="submit">Register</button>
         </div>
-        <a href="users">Users list</a><br>
         <a href="index">To the main page</a>
 
     </form>
