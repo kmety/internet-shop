@@ -30,6 +30,7 @@ public class AuthenticationFilter implements Filter {
             if (cookie.getName().equals("MATE")) {
                 Optional<User> user = userService.getByToken(cookie.getValue());
                 if (user.isPresent()) {
+                    servletRequest.setAttribute("visitor", user.get());
                     chain.doFilter(servletRequest, servletResponse);
                     return;
                 }
