@@ -6,8 +6,8 @@
 </head>
 <body>
 You entered as ${sessionScope.loggedInUser.name}
-<form action="../logoff">
-    <button type="submit">Log off</button>
+<form action="../logout">
+    <button type="submit">Logout</button>
 </form>
 <h3>All orders of ${sessionScope.loggedInUser.name}</h3>
 

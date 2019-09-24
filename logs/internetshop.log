@@ -1,0 +1,11 @@
+2019-09-24 15:31:20 INFO  InjectorInitializer:15 - Dependencies injected
+2019-09-24 15:31:29 INFO  LoginController:38 - User admin logged in
+2019-09-24 15:31:33 INFO  LogoutController:22 - User admin logged off
+2019-09-24 15:31:47 INFO  AuthenticationFilter:39 - User was not authentificated
+2019-09-24 15:31:57 INFO  LoginController:38 - User user logged in
+2019-09-24 15:32:05 INFO  LogoutController:22 - User user logged off
+2019-09-24 15:35:07 INFO  InjectorInitializer:15 - Dependencies injected
+2019-09-24 15:35:19 INFO  LoginController:38 - User admin logged in
+2019-09-24 15:35:20 INFO  AuthorizationFilter:54 - User's role doesn't match required role
+2019-09-24 15:35:36 INFO  AuthorizationFilter:54 - User's role doesn't match required role
+2019-09-24 15:35:41 INFO  LogoutController:22 - User admin logged off

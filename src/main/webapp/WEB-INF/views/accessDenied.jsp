@@ -12,8 +12,8 @@
     </c:when>
     <c:otherwise>
         You entered as ${sessionScope.loggedInUser.name}
-        <form action="../logoff">
-            <button type="submit">Log off</button>
+        <form action="../logout">
+            <button type="submit">Logout</button>
         </form>
         <br />
     </c:otherwise>

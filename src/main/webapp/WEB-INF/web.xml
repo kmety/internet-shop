@@ -113,12 +113,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>logoff</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.LogOffController</servlet-class>
+        <servlet-name>logout</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.LogoutController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>logoff</servlet-name>
-        <url-pattern>/logoff</url-pattern>
+        <servlet-name>logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
     <servlet>
