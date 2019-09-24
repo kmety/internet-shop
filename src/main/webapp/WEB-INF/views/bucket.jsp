@@ -6,8 +6,8 @@
 </head>
 <body>
 You entered as ${sessionScope.loggedInUser.name}
-<form action="../logoff">
-    <button type="submit">Log off</button>
+<form action="../logout">
+    <button type="submit">Logout</button>
 </form>
 <h3>${sessionScope.loggedInUser.name}, welcome to your bucket</h3>
 <table border="1">

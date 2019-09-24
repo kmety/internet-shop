@@ -1,7 +1,9 @@
 package mate.academy.internetshop.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import mate.academy.internetshop.idgenerators.UserIdGenerator;
 
 public class User {
@@ -13,6 +15,7 @@ public class User {
     private String token;
     private List<Order> orders;
     private Bucket bucket;
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
         id = UserIdGenerator.generateId();
@@ -78,6 +81,14 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
     }
 
     @Override

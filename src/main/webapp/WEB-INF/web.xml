@@ -113,20 +113,38 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>logoff</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.LogOffController</servlet-class>
+        <servlet-name>logout</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.LogoutController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>logoff</servlet-name>
-        <url-pattern>/logoff</url-pattern>
+        <servlet-name>logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>injectData</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.InjectDataController</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>injectData</servlet-name>
+        <url-pattern>/injectData</url-pattern>
     </servlet-mapping>
 
     <filter>
-        <filter-name>auth-filter</filter-name>
+        <filter-name>authentication-filter</filter-name>
         <filter-class>mate.academy.internetshop.web.filter.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>auth-filter</filter-name>
+        <filter-name>authentication-filter</filter-name>
+        <url-pattern>/user/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>authorization-filter</filter-name>
+        <filter-class>mate.academy.internetshop.web.filter.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authorization-filter</filter-name>
         <url-pattern>/user/*</url-pattern>
     </filter-mapping>
 

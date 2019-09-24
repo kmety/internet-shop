@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.model.User;
 import org.apache.log4j.Logger;
 
-public class LogOffController extends HttpServlet {
-    private static Logger logger = Logger.getLogger(LogOffController.class);
+public class LogoutController extends HttpServlet {
+    private static Logger logger = Logger.getLogger(LogoutController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

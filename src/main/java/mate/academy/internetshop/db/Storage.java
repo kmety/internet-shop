@@ -12,12 +12,4 @@ public class Storage {
     public static final List<Bucket> buckets = new ArrayList<>();
     public static final List<Item> items = new ArrayList<>();
     public static final List<Order> orders = new ArrayList<>();
-
-    static {
-        items.add(new Item("IPhone", 1500.));
-        items.add(new Item("MacBook", 3500.));
-        items.add(new Item("AppleWatch", 400.));
-        items.add(new Item("IPad", 1500.));
-        items.add(new Item("AirPods", 200.));
-    }
 }
