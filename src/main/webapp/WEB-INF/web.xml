@@ -131,6 +131,33 @@
         <url-pattern>/injectData</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>items</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.ItemsManagingController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>items</servlet-name>
+        <url-pattern>/user/items</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>createItem</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.CreateItemController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>createItem</servlet-name>
+        <url-pattern>/user/createItem</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteItem</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.DeleteItemController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteItem</servlet-name>
+        <url-pattern>/user/deleteItem</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>authentication-filter</filter-name>
         <filter-class>mate.academy.internetshop.web.filter.AuthenticationFilter</filter-class>

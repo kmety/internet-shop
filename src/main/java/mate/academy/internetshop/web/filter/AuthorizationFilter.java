@@ -31,6 +31,9 @@ public class AuthorizationFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         protectedUrls.put("/user/users", ADMIN);
         protectedUrls.put("/user/deleteUser", ADMIN);
+        protectedUrls.put("/user/itemsManaging", ADMIN);
+        protectedUrls.put("/user/createItem", ADMIN);
+        protectedUrls.put("/user/deleteItem", ADMIN);
         protectedUrls.put("/user/addToBucket", USER);
         protectedUrls.put("/user/bucket", USER);
         protectedUrls.put("/user/deleteFromBucket", USER);

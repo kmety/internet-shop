@@ -33,11 +33,14 @@
             </tr>
         </c:forEach>
     </table>
-<br>
+    <h5>User's zone</h5>
     <a href="user/bucket">Show user's bucket</a>
     <br>
     <a href="user/showAllOrders">Show user's orders</a>
     <br>
+    <h5>Admin's zone</h5>
     <a href="user/users">Users list</a>
+    <br>
+    <a href="user/items">Items list</a>
 </body>
 </html>

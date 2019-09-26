@@ -3,7 +3,7 @@ package mate.academy.internetshop.dao.jdbc;
 import java.sql.Connection;
 
 public class AbstractDao<T> {
-    protected final static String DB_NAME = "internetshop";
+    protected static final String DB_NAME = "internetshop";
     protected final Connection connection;
 
     public AbstractDao(Connection connection) {
