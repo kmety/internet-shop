@@ -13,6 +13,17 @@ public class Item {
         this.price = price;
     }
 
+    public Item(Long id) {
+        this.id = id;
+    }
+
+    public Item() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
