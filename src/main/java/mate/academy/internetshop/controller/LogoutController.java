@@ -18,8 +18,8 @@ public class LogoutController extends HttpServlet {
         cookie.setMaxAge(0);
         resp.addCookie(cookie);
         User user = (User) req.getSession().getAttribute("loggedInUser");
-        req.getSession().removeAttribute("loggedInUser");
-        logger.info("User " + user.getLogin() + " logged off");
+        req.getSession().invalidate();
+        logger.info("User " + user.getLogin() + " logged out");
         resp.sendRedirect(req.getContextPath() + "/index");
     }
 }

@@ -4,7 +4,6 @@ import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.ItemService;
@@ -19,11 +18,6 @@ public class InjectDataController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        itemService.add(new Item("IPhone", 1500.));
-        itemService.add(new Item("MacBook", 3500.));
-        itemService.add(new Item("AppleWatch", 400.));
-        itemService.add(new Item("IPad", 1500.));
-        itemService.add(new Item("AirPods", 200.));
 
         User admin = new User();
         admin.setName("admin");
