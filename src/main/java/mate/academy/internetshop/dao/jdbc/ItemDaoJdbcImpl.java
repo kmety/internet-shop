@@ -37,11 +37,11 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     @Override
     public Item get(Long id) {
         String query = "SELECT * FROM " + DB_NAME + ".items WHERE item_id=" + id + ";";
-        try (Statement stmt = connection.createStatement();
-                 ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                String name = rs.getString("name");
-                Double price = rs.getDouble("price");
+        try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                Double price = resultSet.getDouble("price");
                 Item item = new Item(id);
                 item.setName(name);
                 item.setPrice(price);
@@ -83,12 +83,12 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     public List<Item> getAll() {
         String query = "SELECT * FROM " + DB_NAME + ".items;";
         List<Item> result = new ArrayList<>();
-        try (Statement stmt = connection.createStatement();
-                 ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                Long id = rs.getLong("item_id");
-                String name = rs.getString("name");
-                Double price = rs.getDouble("price");
+        try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("item_id");
+                String name = resultSet.getString("name");
+                Double price = resultSet.getDouble("price");
                 Item item = new Item();
                 item.setId(id);
                 item.setName(name);
