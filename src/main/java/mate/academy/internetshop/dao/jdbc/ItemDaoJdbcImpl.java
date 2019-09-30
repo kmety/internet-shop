@@ -65,27 +65,23 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     @Override
     public Item update(Item item) {
         String query = "UPDATE items SET name = ?, price = ? WHERE (item_id = ?);";
-
-        try (PreparedStatement statement
-                     = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, item.getName());
-            statement.setDouble(2, item.getPrice());
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Updating item failed, no rows affected.");
-            }
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    item.setId(generatedKeys.getLong(1));
-                } else {
-                    throw new SQLException("Updating user failed, no ID obtained.");
-                }
-            }
+        Item retrievedItem = get(item.getId());
+        if (item.getName() != null) {
+            retrievedItem.setName(item.getName());
+        }
+        if (item.getPrice() != null) {
+            retrievedItem.setPrice(item.getPrice());
+        }
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, retrievedItem.getName());
+            statement.setDouble(2, retrievedItem.getPrice());
+            statement.setLong(3, retrievedItem.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't update item", e);
             return null;
         }
-        return item;
+        return retrievedItem;
     }
 
     @Override

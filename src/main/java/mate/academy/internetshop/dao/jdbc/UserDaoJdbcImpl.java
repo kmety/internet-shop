@@ -81,7 +81,35 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User update(User user) {
-        return null;
+        String query = "UPDATE users "
+                + "SET name = ?, surname = ?, login = ?, password = ? "
+                + "WHERE (user_id = ?);";
+        User retrievedUser = get(user.getId());
+        if (user.getName() != null) {
+            retrievedUser.setName(user.getName());
+        }
+        if (user.getSurname() != null) {
+            retrievedUser.setSurname(user.getSurname());
+        }
+        if (user.getLogin() != null) {
+            retrievedUser.setLogin(user.getLogin());
+        }
+        if (user.getPassword() != null) {
+            retrievedUser.setPassword(user.getPassword());
+        }
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, retrievedUser.getName());
+            statement.setString(2, retrievedUser.getSurname());
+            statement.setString(3, retrievedUser.getLogin());
+            statement.setString(4, retrievedUser.getPassword());
+            statement.setLong(5, retrievedUser.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Can't update user", e);
+            return null;
+        }
+        return retrievedUser;
     }
 
     @Override

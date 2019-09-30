@@ -50,22 +50,13 @@ public class RoleDaoJdbcImpl extends AbstractDao<Role> implements RoleDao {
     }
 
     @Override
-    public boolean attachRole(User user, Role role) {
-        return false;
-    }
-
-    @Override
-    public boolean detachRole(User user, Role role) {
-        return false;
-    }
-
-    @Override
     public Set<Role> getRoles(User user) {
         Set<Role> roles = new HashSet<>();
         String query = "SELECT role.role_name "
-                + "FROM user_role, role "
-                + "WHERE user_role.role_id=role.role_id "
-                + "AND user_role.user_id=?;";
+                + "FROM user_role "
+                + "INNER JOIN role "
+                + "ON user_role.role_id=role.role_id "
+                + "WHERE user_role.user_id=?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, user.getId());
             ResultSet resultSet = statement.executeQuery();

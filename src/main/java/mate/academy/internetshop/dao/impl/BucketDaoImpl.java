@@ -31,20 +31,6 @@ public class BucketDaoImpl implements BucketDao {
     }
 
     @Override
-    public Bucket update(Bucket newBucket) {
-        Bucket bucket = get(newBucket.getId());
-        bucket.setItems(newBucket.getItems());
-        bucket.setUser(newBucket.getUser());
-        return bucket;
-    }
-
-    @Override
-    public void delete(Long id) {
-        Storage.buckets
-                .removeIf(bucket -> bucket.getId().equals(id));
-    }
-
-    @Override
     public Bucket addItem(Bucket bucket, Item item) {
         Item retrievedItem = itemDao.get(item.getId());
         bucket.getItems().add(retrievedItem);

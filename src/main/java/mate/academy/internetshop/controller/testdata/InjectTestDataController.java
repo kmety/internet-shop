@@ -29,7 +29,7 @@ public class InjectTestDataController extends HttpServlet {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error while closing connection", e);
         }
         addUsers();
         addItems();

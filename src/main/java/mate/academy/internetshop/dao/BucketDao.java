@@ -9,10 +9,6 @@ public interface BucketDao {
 
     Bucket get(Long id);
 
-    Bucket update(Bucket bucket);
-
-    void delete(Long id);
-
     Bucket addItem(Bucket bucket, Item item);
 
     Bucket clear(Bucket bucket);

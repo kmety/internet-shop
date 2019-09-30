@@ -29,7 +29,7 @@ public class CreateItemController extends HttpServlet {
         try {
             price = Double.parseDouble(req.getParameter("price"));
         } catch (NumberFormatException e) {
-            logger.warn("Incorrect format of price", e);
+            logger.error("Incorrect format of price", e);
         }
         if (price >= 0.) {
             Item item = new Item(name, price);

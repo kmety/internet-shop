@@ -72,16 +72,6 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     }
 
     @Override
-    public Bucket update(Bucket bucket) {
-        return null;
-    }
-
-    @Override
-    public void delete(Long id) {
-
-    }
-
-    @Override
     public Bucket addItem(Bucket bucket, Item item) {
         String query = "INSERT INTO bucket_item (bucket_id, item_id) Values (?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -112,9 +102,9 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     public List<Item> getAllItems(Long bucketId) {
         List<Item> items = new ArrayList<>();
         String query = "SELECT items.item_id, name, price "
-                + "FROM items, bucket_item "
-                + "WHERE bucket_item.item_id=items.item_id "
-                + "AND bucket_item.bucket_id=?;";
+                + "FROM items INNER JOIN bucket_item "
+                + "ON bucket_item.item_id=items.item_id "
+                + "WHERE bucket_item.bucket_id=?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, bucketId);
             ResultSet resultSet = statement.executeQuery();
