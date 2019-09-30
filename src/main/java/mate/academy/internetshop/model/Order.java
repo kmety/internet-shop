@@ -2,21 +2,26 @@ package mate.academy.internetshop.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import mate.academy.internetshop.idgenerators.OrderIdGenerator;
 
 public class Order {
     private Long id;
-    private LocalDate date;
+    private  LocalDate date;
     private List<Item> items;
     private User user;
-    private double totalPrice;
+
+    public Order(Long id) {
+        this.id = id;
+        date = LocalDate.now();
+    }
 
     public Order(List<Item> items, User user) {
-        id = OrderIdGenerator.generateId();
         date = LocalDate.now();
         this.items = items;
         this.user = user;
-        totalPrice = items.stream().mapToDouble(Item::getPrice).sum();
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
@@ -43,7 +48,7 @@ public class Order {
         return date;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

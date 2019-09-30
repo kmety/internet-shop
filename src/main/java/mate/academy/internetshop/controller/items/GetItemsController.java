@@ -1,4 +1,4 @@
-package mate.academy.internetshop.controller;
+package mate.academy.internetshop.controller.items;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,7 +10,7 @@ import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.ItemService;
 
-public class ItemsManagingController extends HttpServlet {
+public class GetItemsController extends HttpServlet {
     @Inject
     private static ItemService itemService;
 

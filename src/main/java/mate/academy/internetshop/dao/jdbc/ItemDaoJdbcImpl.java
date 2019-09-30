@@ -22,24 +22,33 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public Item add(Item item) {
-        String query = "INSERT INTO " + DB_NAME + ".items (name, price) VALUES (?, ?);";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, item.getName());
-            preparedStatement.setDouble(2, item.getPrice());
-            preparedStatement.executeUpdate();
-            return item;
+        String query = "INSERT INTO items (name, price) VALUES (?, ?);";
+        try (PreparedStatement statement
+                     = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, item.getName());
+            statement.setDouble(2, item.getPrice());
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    item.setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Creating item failed, no ID obtained.");
+                }
+            }
         } catch (SQLException e) {
             logger.error("Can't add new item", e);
+            return null;
         }
-        return null;
+        return item;
     }
 
     @Override
     public Item get(Long id) {
-        String query = "SELECT * FROM " + DB_NAME + ".items WHERE item_id=" + id + ";";
-        try (Statement statement = connection.createStatement();
-                 ResultSet resultSet = statement.executeQuery(query)) {
-            while (resultSet.next()) {
+        String query = "SELECT * FROM items WHERE item_id=?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
                 String name = resultSet.getString("name");
                 Double price = resultSet.getDouble("price");
                 Item item = new Item(id);
@@ -55,22 +64,33 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public Item update(Item item) {
-        String query = "UPDATE " + DB_NAME + ".items SET name = ?, price = ? WHERE (item_id = ?);";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, item.getName());
-            preparedStatement.setDouble(2, item.getPrice());
-            preparedStatement.setLong(3, item.getId());
-            preparedStatement.executeUpdate();
-            return item;
+        String query = "UPDATE items SET name = ?, price = ? WHERE (item_id = ?);";
+
+        try (PreparedStatement statement
+                     = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, item.getName());
+            statement.setDouble(2, item.getPrice());
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Updating item failed, no rows affected.");
+            }
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    item.setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Updating user failed, no ID obtained.");
+                }
+            }
         } catch (SQLException e) {
             logger.error("Can't update item", e);
+            return null;
         }
-        return null;
+        return item;
     }
 
     @Override
     public void delete(Long id) {
-        String query = "DELETE FROM " + DB_NAME + ".items WHERE (item_id = ?);";
+        String query = "DELETE FROM items WHERE (item_id = ?);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
@@ -81,10 +101,10 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
 
     @Override
     public List<Item> getAll() {
-        String query = "SELECT * FROM " + DB_NAME + ".items;";
+        String query = "SELECT * FROM items;";
         List<Item> result = new ArrayList<>();
-        try (Statement statement = connection.createStatement();
-                 ResultSet resultSet = statement.executeQuery(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Long id = resultSet.getLong("item_id");
                 String name = resultSet.getString("name");

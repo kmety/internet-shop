@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import mate.academy.internetshop.idgenerators.UserIdGenerator;
 
 public class User {
     private Long id;
@@ -18,9 +17,12 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User() {
-        id = UserIdGenerator.generateId();
         orders = new ArrayList<>();
         bucket = new Bucket(this);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
