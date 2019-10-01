@@ -1,6 +1,0 @@
-2019-09-30 23:14:10 INFO  InjectorInitializer:15 - Dependencies injected
-2019-09-30 23:14:17 INFO  LoginController:38 - User u1 logged in
-2019-09-30 23:14:28 INFO  LogoutController:22 - User u1 logged out
-2019-09-30 23:14:38 INFO  AuthenticationFilter:39 - User was not authentificated
-2019-09-30 23:14:42 INFO  LoginController:38 - User admin logged in
-2019-09-30 23:15:09 INFO  LogoutController:22 - User admin logged out

@@ -150,6 +150,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>editItem</servlet-name>
+        <servlet-class>mate.academy.internetshop.controller.items.EditItemController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>editItem</servlet-name>
+        <url-pattern>/user/editItem</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>deleteItem</servlet-name>
         <servlet-class>mate.academy.internetshop.controller.items.DeleteItemController</servlet-class>
     </servlet>

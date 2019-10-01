@@ -19,7 +19,7 @@
             <td>${item.id}</td>
             <td>${item.name}</td>
             <td>${item.price}</td>
-            <td><a href="#">Update</a></td>
+            <td><a href="editItem?item_id=${item.id}">Update</a></td>
             <td><a href="deleteItem?item_id=${item.id}">Delete</a></td>
         </tr>
     </c:forEach>

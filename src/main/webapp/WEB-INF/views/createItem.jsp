@@ -22,6 +22,6 @@
     </div>
 
 </form>
-<a href="itemsManaging">Return to items list</a>
+<a href="items">Return to items list</a>
 </body>
 </html>

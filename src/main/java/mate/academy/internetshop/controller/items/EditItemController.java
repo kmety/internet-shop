@@ -10,20 +10,23 @@ import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.ItemService;
 import org.apache.log4j.Logger;
 
-public class CreateItemController extends HttpServlet {
+public class EditItemController extends HttpServlet {
     @Inject
     private static ItemService itemService;
-    private static final Logger logger = Logger.getLogger(CreateItemController.class);
+    private static Logger logger = Logger.getLogger(EditItemController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("../WEB-INF/views/createItem.jsp").forward(req, resp);
+        Long itemId = Long.parseLong(req.getParameter("item_id"));
+        Item item = itemService.get(itemId);
+        req.setAttribute("item", item);
+        req.getRequestDispatcher("../WEB-INF/views/editItem.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Long itemId = Long.parseLong(req.getParameter("item_id"));
         String name = req.getParameter("name");
         double price = -1.;
         try {
@@ -35,7 +38,8 @@ public class CreateItemController extends HttpServlet {
         }
         if (price >= 0.) {
             Item item = new Item(name, price);
-            itemService.add(item);
+            item.setId(itemId);
+            itemService.update(item);
         }
         resp.sendRedirect(req.getContextPath() + "/user/items");
     }
