@@ -62,4 +62,9 @@ public class UserDaoImpl implements UserDao {
                 .filter(user -> user.getToken().equals(token))
                 .findAny();
     }
+
+    @Override
+    public String getSaltByLogin(String login) {
+        return "";
+    }
 }

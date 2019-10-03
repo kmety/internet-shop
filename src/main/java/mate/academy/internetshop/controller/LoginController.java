@@ -11,6 +11,7 @@ import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 import org.apache.log4j.Logger;
 
 public class LoginController extends HttpServlet {
@@ -30,7 +31,9 @@ public class LoginController extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("psw");
         try {
-            User user = userService.login(login, password);
+            String salt = userService.getSaltByLogin(login);
+            String hashedPassword = HashUtil.hashPassword(password, salt.getBytes());
+            User user = userService.login(login, hashedPassword);
             Cookie cookie = new Cookie("MATE", user.getToken());
             resp.addCookie(cookie);
             HttpSession session = req.getSession(true);

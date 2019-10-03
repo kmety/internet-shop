@@ -1,13 +1,14 @@
 package mate.academy.internetshop.dao;
 
 import java.util.List;
+import java.util.Optional;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
 
 public interface BucketDao {
     Bucket add(Bucket bucket);
 
-    Bucket get(Long id);
+    Optional<Bucket> get(Long id);
 
     Bucket addItem(Bucket bucket, Item item);
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.lib.Dao;
@@ -49,9 +50,9 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     }
 
     @Override
-    public Bucket get(Long id) {
+    public Optional<Bucket> get(Long id) {
         String query = "SELECT * FROM bucket WHERE bucket_id = ?;";
-        Bucket bucket = null;
+        Optional<Bucket> bucketOptional = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
@@ -59,16 +60,17 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             if (resultSet.next()) {
                 Long bucketId = resultSet.getLong("bucket_id");
                 Long userId = resultSet.getLong("user_id");
-                bucket = new Bucket(bucketId);
+                Bucket bucket = new Bucket(bucketId);
                 User user = userDao.get(userId);
                 List<Item> items = getAllItems(bucketId);
                 bucket.setUser(user);
                 bucket.setItems(items);
+                bucketOptional = Optional.of(bucket);
             }
         } catch (SQLException e) {
             logger.error("Get bucket by id error", e);
         }
-        return bucket;
+        return bucketOptional;
     }
 
     @Override
@@ -82,7 +84,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             logger.error("Can't add item to bucket", e);
             return null;
         }
-        return get(bucket.getId());
+        return get(bucket.getId()).get();
     }
 
     @Override
@@ -95,7 +97,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             logger.error("Can't clear the bucket", e);
             return null;
         }
-        return get(bucket.getId());
+        return get(bucket.getId()).get();
     }
 
     @Override
@@ -150,7 +152,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             logger.error("Get bucket by id error", e);
         }
         if (bucketId != null) {
-            bucket = get(bucketId);
+            bucket = get(bucketId).get();
         }
         return bucket;
     }
