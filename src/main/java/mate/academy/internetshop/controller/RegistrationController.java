@@ -33,7 +33,7 @@ public class RegistrationController extends HttpServlet {
         user.setLogin(req.getParameter("login"));
         user.setPassword(req.getParameter("psw"));
         user.addRole(Role.of("USER"));
-        userService.add(user);
+        user = userService.add(user);
         Cookie cookie = new Cookie("MATE", user.getToken());
         resp.addCookie(cookie);
         HttpSession session = req.getSession(true);

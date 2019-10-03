@@ -9,15 +9,11 @@ public interface BucketService {
 
     Bucket get(Long id);
 
-    Bucket update(Bucket bucket);
-
-    void delete(Long id);
-
     Bucket addItem(Bucket bucket, Item item);
 
     Bucket clear(Bucket bucket);
 
-    List<Item> getAllItems(Bucket bucket);
+    List<Item> getAllItems(Long bucketId);
 
     void deleteItem(Long bucketId, Item item);
 }

@@ -16,7 +16,6 @@ You entered as ${sessionScope.loggedInUser.name}
         <th>Name</th>
         <th>Surname</th>
         <th>Login</th>
-        <th>Password</th>
         <th>Delete</th>
     </tr>
     <c:forEach items="${users}" var="user">
@@ -25,7 +24,6 @@ You entered as ${sessionScope.loggedInUser.name}
             <td>${user.name}</td>
             <td>${user.surname}</td>
             <td>${user.login}</td>
-            <td>${user.password}</td>
             <td><a href="deleteUser?user_id=${user.id}">Delete</a></td>
         </tr>
     </c:forEach>

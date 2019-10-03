@@ -14,13 +14,11 @@ You entered as ${sessionScope.loggedInUser.name}
 <table border="1">
     <tr>
         <th>Date</th>
-        <th>Total price</th>
         <th>Delete</th>
     </tr>
     <c:forEach var="order" items="${orders}">
         <tr>
             <td>${order.date}</td>
-            <td>${order.totalPrice}</td>
             <td><a href="deleteOrder?order_id=${order.id}">Delete</a></td>
         </tr>
     </c:forEach>
