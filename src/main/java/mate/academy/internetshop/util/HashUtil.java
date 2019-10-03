@@ -1,0 +1,41 @@
+package mate.academy.internetshop.util;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import mate.academy.internetshop.model.User;
+import org.apache.log4j.Logger;
+
+public class HashUtil {
+    private static Logger logger = Logger.getLogger(HashUtil.class);
+
+    public static byte[] getSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return salt;
+    }
+
+    public static String hashPassword(String password, byte[] salt) {
+        StringBuilder hashedPassword = new StringBuilder();
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+            messageDigest.update(salt);
+            byte[] digest = messageDigest.digest(password.getBytes());
+            for (byte digestByte : digest) {
+                hashedPassword.append(String.format("%02x", digestByte));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("No Such Algorithm found", e);
+        }
+        return hashedPassword.toString();
+    }
+
+    private static boolean isValid(String password, byte[] salt) {
+        User userFromDb = new User();
+        userFromDb.setPassword(hashPassword("hello world", salt));
+        userFromDb.setSalt(new String(salt));
+
+        return hashPassword(password, salt).equals(userFromDb.getPassword());
+    }
+}

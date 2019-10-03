@@ -2,7 +2,6 @@ package mate.academy.internetshop.service.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.AuthenticationException;
@@ -22,15 +21,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User add(User user) {
-        user.setToken(getToken());
         User newUser = userDao.add(user);
         Bucket bucket = bucketDao.add(newUser.getBucket());
         newUser.setBucket(bucket);
         return newUser;
-    }
-
-    private String getToken() {
-        return UUID.randomUUID().toString();
     }
 
     @Override
@@ -67,5 +61,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getByToken(String token) {
         return userDao.getByToken(token);
+    }
+
+    @Override
+    public String getSaltByLogin(String login) {
+        return userDao.getSaltByLogin(login);
     }
 }

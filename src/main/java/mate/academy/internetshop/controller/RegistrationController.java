@@ -1,6 +1,7 @@
 package mate.academy.internetshop.controller;
 
 import java.io.IOException;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 import org.apache.log4j.Logger;
 
 public class RegistrationController extends HttpServlet {
@@ -31,7 +33,12 @@ public class RegistrationController extends HttpServlet {
         user.setName(req.getParameter("name"));
         user.setSurname(req.getParameter("surname"));
         user.setLogin(req.getParameter("login"));
-        user.setPassword(req.getParameter("psw"));
+        String password = req.getParameter("psw");
+        byte[] salt = HashUtil.getSalt();
+        String hashedPassword = HashUtil.hashPassword(password, salt);
+        user.setPassword(hashedPassword);
+        user.setSalt(new String(salt));
+        user.setToken(UUID.randomUUID().toString());
         user.addRole(Role.of("USER"));
         user = userService.add(user);
         Cookie cookie = new Cookie("MATE", user.getToken());

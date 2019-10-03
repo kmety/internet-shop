@@ -34,14 +34,15 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public User add(User user) {
         String query = "INSERT INTO users "
-                + "(name, surname, login, password, token) VALUES (?, ?, ?, ?, ?);";
+                + "(name, surname, login, password, salt, token) VALUES (?, ?, ?, ?, ?, ?);";
         try (PreparedStatement statement
                      = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getSurname());
             statement.setString(3, user.getLogin());
             statement.setString(4, user.getPassword());
-            statement.setString(5, user.getToken());
+            statement.setString(5, user.getSalt());
+            statement.setString(6, user.getToken());
             statement.executeUpdate();
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -71,6 +72,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setName(resultSet.getString("name"));
                 user.setSurname(resultSet.getString("surname"));
                 user.setLogin(resultSet.getString("login"));
+                user.setSalt(resultSet.getString("salt"));
                 user.setToken(resultSet.getString("token"));
             }
         } catch (SQLException e) {
@@ -122,6 +124,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setName(resultSet.getString("name"));
                 user.setSurname(resultSet.getString("surname"));
                 user.setLogin(resultSet.getString("login"));
+                user.setSalt(resultSet.getString("salt"));
                 user.setToken(resultSet.getString("token"));
                 users.add(user);
             }
@@ -179,5 +182,21 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             logger.error("Getting by token error", e);
         }
         return userOptional;
+    }
+
+    @Override
+    public String getSaltByLogin(String login) {
+        String query = "SELECT salt FROM users WHERE login = ?;";
+        String result = "";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                result = resultSet.getString("salt");
+            }
+        } catch (SQLException e) {
+            logger.error("Getting salt by login error", e);
+        }
+        return result;
     }
 }
