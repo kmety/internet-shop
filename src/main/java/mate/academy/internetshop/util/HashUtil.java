@@ -3,7 +3,6 @@ package mate.academy.internetshop.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import mate.academy.internetshop.model.User;
 import org.apache.log4j.Logger;
 
 public class HashUtil {
@@ -29,13 +28,5 @@ public class HashUtil {
             logger.error("No Such Algorithm found", e);
         }
         return hashedPassword.toString();
-    }
-
-    private static boolean isValid(String password, byte[] salt) {
-        User userFromDb = new User();
-        userFromDb.setPassword(hashPassword("hello world", salt));
-        userFromDb.setSalt(new String(salt));
-
-        return hashPassword(password, salt).equals(userFromDb.getPassword());
     }
 }
