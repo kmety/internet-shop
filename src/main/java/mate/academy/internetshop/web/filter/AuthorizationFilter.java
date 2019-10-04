@@ -32,7 +32,7 @@ public class AuthorizationFilter implements Filter {
     public void init(FilterConfig filterConfig) {
         protectedUrls.put("/user/users", Role.of("ADMIN"));
         protectedUrls.put("/user/deleteUser", Role.of("ADMIN"));
-        protectedUrls.put("/user/itemsManaging", Role.of("ADMIN"));
+        protectedUrls.put("/user/items", Role.of("ADMIN"));
         protectedUrls.put("/user/createItem", Role.of("ADMIN"));
         protectedUrls.put("/user/deleteItem", Role.of("ADMIN"));
         protectedUrls.put("/user/addToBucket", Role.of("USER"));

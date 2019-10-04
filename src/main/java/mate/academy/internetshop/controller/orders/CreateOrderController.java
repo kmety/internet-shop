@@ -24,7 +24,7 @@ public class CreateOrderController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         User user = (User) req.getSession().getAttribute("loggedInUser");
-        Bucket bucket = bucketService.get(user.getBucket().getId());
+        Bucket bucket = bucketService.get(user.getBucket().getId()).get();
         if (bucket.getItems().size() != 0) {
             Order order = new Order(bucket.getItems(), user);
             orderService.add(order);

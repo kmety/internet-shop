@@ -11,6 +11,7 @@ public class User {
     private String surname;
     private String login;
     private String password;
+    private String salt;
     private String token;
     private List<Order> orders;
     private Bucket bucket;
@@ -75,6 +76,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getToken() {

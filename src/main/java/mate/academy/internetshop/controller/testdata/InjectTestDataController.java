@@ -12,6 +12,7 @@ import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.ItemService;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 import org.apache.log4j.Logger;
 
 public class InjectTestDataController extends HttpServlet {
@@ -74,7 +75,9 @@ public class InjectTestDataController extends HttpServlet {
         admin.setName("admin");
         admin.setSurname("admin");
         admin.setLogin("admin");
-        admin.setPassword("1");
+        byte[] adminSalt = HashUtil.getSalt();
+        admin.setPassword(HashUtil.hashPassword("1", adminSalt));
+        admin.setSalt(new String(adminSalt));
         admin.setToken(UUID.randomUUID().toString());
         admin.addRole(Role.of("ADMIN"));
         userService.add(admin);
@@ -83,7 +86,9 @@ public class InjectTestDataController extends HttpServlet {
         user1.setName("user1");
         user1.setSurname("user1");
         user1.setLogin("u1");
-        user1.setPassword("1");
+        byte[] user1Salt = HashUtil.getSalt();
+        user1.setPassword(HashUtil.hashPassword("1", user1Salt));
+        user1.setSalt(new String(user1Salt));
         user1.setToken(UUID.randomUUID().toString());
         user1.addRole(Role.of("USER"));
         userService.add(user1);
@@ -92,7 +97,9 @@ public class InjectTestDataController extends HttpServlet {
         user2.setName("user2");
         user2.setSurname("user2");
         user2.setLogin("u2");
-        user2.setPassword("1");
+        byte[] user2Salt = HashUtil.getSalt();
+        user2.setPassword(HashUtil.hashPassword("1", user2Salt));
+        user2.setSalt(new String(user2Salt));
         user2.setToken(UUID.randomUUID().toString());
         user2.addRole(Role.of("USER"));
         userService.add(user2);
