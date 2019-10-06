@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Item;
@@ -43,8 +44,9 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     }
 
     @Override
-    public Item get(Long id) {
+    public Optional<Item> get(Long id) {
         String query = "SELECT * FROM items WHERE item_id=?;";
+        Optional<Item> optionalItem = Optional.empty();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -54,12 +56,13 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 Item item = new Item(id);
                 item.setName(name);
                 item.setPrice(price);
-                return item;
+                optionalItem = Optional.of(item);
+                return optionalItem;
             }
         } catch (SQLException e) {
             logger.error("Can't get item by id " + id, e);
         }
-        return null;
+        return optionalItem;
     }
 
     @Override

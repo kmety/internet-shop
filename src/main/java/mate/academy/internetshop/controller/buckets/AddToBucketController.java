@@ -30,7 +30,7 @@ public class AddToBucketController extends HttpServlet {
             Bucket bucket = bucketOptional.orElseThrow(()
                     -> new ItemNotFoundException("No bucked returned"));
             Long itemId = Long.parseLong(req.getParameter("item_id"));
-            Item item = itemService.get(itemId);
+            Item item = itemService.get(itemId).get();
             bucketService.addItem(bucket, item);
         } catch (ItemNotFoundException e) {
             logger.error(e);

@@ -30,7 +30,7 @@ public class BucketDaoImpl implements BucketDao {
 
     @Override
     public Bucket addItem(Bucket bucket, Item item) {
-        Item retrievedItem = itemDao.get(item.getId());
+        Item retrievedItem = itemDao.get(item.getId()).get();
         bucket.getItems().add(retrievedItem);
         return get(bucket.getId()).get();
     }

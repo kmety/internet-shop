@@ -1,13 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS internetshop;
 
 CREATE TABLE IF NOT EXISTS `items` (
-  `item_id` INT NOT NULL AUTO_INCREMENT,
+  `item_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  `price` DECIMAL(6,2) NOT NULL,
+  `price` DECIMAL(8,2) NOT NULL,
   PRIMARY KEY (`item_id`));
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `surname` VARCHAR(45) NULL,
   `login` VARCHAR(45) NOT NULL,
@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`user_id`));
 
 CREATE TABLE `orders` (
-  `order_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
+  `order_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT(10) NOT NULL,
   `date` DATE NULL,
   PRIMARY KEY (`order_id`),
   INDEX `orders.user_id_idx` (`user_id` ASC) VISIBLE,
@@ -29,9 +29,9 @@ CREATE TABLE `orders` (
     ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `orders_items` (
-  `orders_items_id` INT NOT NULL AUTO_INCREMENT,
-  `order_id` INT NOT NULL,
-  `item_id` INT NOT NULL,
+  `orders_items_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
+  `order_id` BIGINT(10) NOT NULL,
+  `item_id` BIGINT(10) NOT NULL,
   PRIMARY KEY (`orders_items_id`),
   INDEX `orders_items.orders.fk_idx` (`order_id` ASC) VISIBLE,
   INDEX `orders_items.items_fk_idx` (`item_id` ASC) VISIBLE,
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `orders_items` (
     ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `bucket` (
-  `bucket_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
+  `bucket_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT(10) NOT NULL,
   PRIMARY KEY (`bucket_id`),
   INDEX `bucket.user_id_fk_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `bucket.user_id_fk`
@@ -58,14 +58,14 @@ CREATE TABLE IF NOT EXISTS `bucket` (
     ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `role` (
-  `role_id` INT NOT NULL AUTO_INCREMENT,
+  `role_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `role_name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`role_id`));
 
 CREATE TABLE IF NOT EXISTS `user_role` (
-  `user_role_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `role_id` INT NOT NULL,
+  `user_role_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT(10) NOT NULL,
+  `role_id` BIGINT(10) NOT NULL,
   PRIMARY KEY (`user_role_id`),
   INDEX `user_role.user_id_fk_idx` (`user_id` ASC) VISIBLE,
   INDEX `user_role.role_id_fk_idx` (`role_id` ASC) VISIBLE,
@@ -81,9 +81,9 @@ CREATE TABLE IF NOT EXISTS `user_role` (
     ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `bucket_item` (
-  `bucket_item_id` INT NOT NULL AUTO_INCREMENT,
-  `bucket_id` INT NOT NULL,
-  `item_id` INT NOT NULL,
+  `bucket_item_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
+  `bucket_id` BIGINT(10) NOT NULL,
+  `item_id` BIGINT(10) NOT NULL,
   PRIMARY KEY (`bucket_item_id`),
   INDEX `bucket_item.bucket_id_fk_idx` (`bucket_id` ASC) VISIBLE,
   INDEX `bucket_item.itemt_id_fk_idx` (`item_id` ASC) VISIBLE,
