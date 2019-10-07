@@ -1,31 +1,33 @@
-# Project Name
+# Internet shop
 
-TODO: Write a project description
+## Table of Contents
+* [Description](#description)
+* [Introduction - the project's aim](#aim)
+* [Technologies](#technologies)
+* [Launch](#launch)
 
-## Installation
+## <a name="description"></a>Description
+Web application, where user can enter the shop, look through available products, add products to bucket and then create orders from chosen products. Admin can manage users list and products list.
 
-TODO: Describe the installation process
+## <a name="aim"></a>Introduction - the project's aim
 
-## Usage
+This is a training project. It's aim is to improve my programming skills, deepen knowledge in hibernate technology
 
-TODO: Write usage instructions
+## <a name="technologies"></a>Technologies
 
-## Contributing
+* Java 11
+* Maven 4.0
+* Servlet 4.0.1
+* Hibernate 5.4.5
+* MySQL database 
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+## <a name="launch"></a>Launch
 
-## History
-
-TODO: Write history
-
-## Credits
-
-TODO: Write credits
-
-## License
-
-TODO: Write license
+1. Clone or download the project from github.com
+2. Add to IDE as maven project
+3. Add tomcat configuration
+4. Add artifact internetshop:war exploded
+5. Run all queries from init_db.sql file
+6. Change hibernate.cfg.xml file, set your login and password
+7. Change Factory.class, set your login and password in DriverManager.getConnection() method
+8. Change log4j.properties, set new link for internetshop.log file in your computer
