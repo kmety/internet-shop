@@ -11,7 +11,7 @@ Web application, where user can enter the shop, look through available products,
 
 ## <a name="aim"></a>Introduction - the project's aim
 
-This is a training project. It's aim is to improve my programming skills, deepen knowledge in hibernate technology
+This is a training project. It's aim is to improve my programming skills, deepen knowledge in hibernate technology.
 
 ## <a name="technologies"></a>Technologies
 
