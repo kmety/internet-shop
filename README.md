@@ -7,7 +7,7 @@
 * [Launch](#launch)
 
 ## <a name="description"></a>Description
-Web application, where user can enter the shop, look through available products, add products to bucket and then create orders from chosen products. Admin can manage users list and products list.
+Web application, where user can enter the shop, look through available products, add products to bucket and then create orders with chosen products. Admin can manage users list and products list.
 
 ## <a name="aim"></a>Introduction - the project's aim
 
