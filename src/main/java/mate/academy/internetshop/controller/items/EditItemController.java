@@ -19,7 +19,7 @@ public class EditItemController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Long itemId = Long.parseLong(req.getParameter("item_id"));
-        Item item = itemService.get(itemId);
+        Item item = itemService.get(itemId).get();
         req.setAttribute("item", item);
         req.getRequestDispatcher("../WEB-INF/views/editItem.jsp").forward(req, resp);
     }
