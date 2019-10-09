@@ -33,7 +33,7 @@ public class LoginController extends HttpServlet {
         try {
             String salt = userService.getSaltByLogin(login);
             String hashedPassword = HashUtil.hashPassword(password, salt.getBytes());
-            User user = userService.login(login, hashedPassword);
+            User user = userService.login(login, hashedPassword).get();
             Cookie cookie = new Cookie("MATE", user.getToken());
             resp.addCookie(cookie);
             HttpSession session = req.getSession(true);

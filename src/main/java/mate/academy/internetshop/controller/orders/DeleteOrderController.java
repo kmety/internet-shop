@@ -20,7 +20,7 @@ public class DeleteOrderController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         User userFromSession = (User) req.getSession().getAttribute("loggedInUser");
-        User user = userService.get(userFromSession.getId());
+        User user = userService.get(userFromSession.getId()).get();
         Long orderId = Long.parseLong(req.getParameter("order_id"));
         Order order = orderService.get(orderId);
         orderService.delete(orderId);

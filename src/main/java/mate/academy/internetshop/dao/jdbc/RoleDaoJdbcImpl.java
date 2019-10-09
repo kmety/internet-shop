@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.lib.Dao;
@@ -70,5 +71,10 @@ public class RoleDaoJdbcImpl extends AbstractDao<Role> implements RoleDao {
             return null;
         }
         return roles;
+    }
+
+    @Override
+    public Optional<Role> getRoleByName(String name) {
+        return Optional.empty();
     }
 }

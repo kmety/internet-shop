@@ -1,5 +1,6 @@
 package mate.academy.internetshop.service.impl;
 
+import java.util.Optional;
 import java.util.Set;
 import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.lib.Inject;
@@ -14,22 +15,11 @@ public class RoleServiceImpl implements RoleService {
     private static RoleDao roleDao;
 
     @Override
-    public boolean attachRole(User user) {
-        return roleDao.attachRole(user);
-    }
-
-    @Override
-    public boolean attachRole(User user, Role role) {
-        return false;
-    }
-
-    @Override
-    public boolean detachRole(User user, Role role) {
-        return false;
-    }
-
-    @Override
     public Set<Role> getRoles(User user) {
         return roleDao.getRoles(user);
+    }
+
+    public Optional<Role> getRoleByName(String name) {
+        return roleDao.getRoleByName(name);
     }
 }

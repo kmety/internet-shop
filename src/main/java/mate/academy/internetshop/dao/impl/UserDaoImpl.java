@@ -1,7 +1,6 @@
 package mate.academy.internetshop.dao.impl;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.db.Storage;
@@ -12,25 +11,24 @@ import mate.academy.internetshop.model.User;
 @Dao
 public class UserDaoImpl implements UserDao {
     @Override
-    public User add(User user) {
+    public Optional<User> add(User user) {
         Storage.users.add(user);
-        return user;
+        return Optional.of(user);
     }
 
     @Override
-    public User get(Long id) {
+    public Optional<User> get(Long id) {
         return Storage.users.stream()
                 .filter(user -> user.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Can't find user with id " + id));
+                .findFirst();
     }
 
     @Override
-    public User update(User newUser) {
-        User user = get(newUser.getId());
+    public Optional<User> update(User newUser) {
+        User user = get(newUser.getId()).get();
         user.setBucket(newUser.getBucket());
         user.setOrders(newUser.getOrders());
-        return user;
+        return Optional.of(user);
     }
 
     @Override
@@ -45,7 +43,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User login(String login, String password)
+    public Optional<User> login(String login, String password)
             throws AuthenticationException {
         Optional<User> userOptional = Storage.users.stream()
                 .filter(user -> user.getLogin().equals(login))
@@ -53,7 +51,7 @@ public class UserDaoImpl implements UserDao {
         if (userOptional.isEmpty() || !userOptional.get().getPassword().equals(password)) {
             throw new AuthenticationException("Incorrect login or password");
         }
-        return userOptional.get();
+        return userOptional;
     }
 
     @Override

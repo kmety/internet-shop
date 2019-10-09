@@ -73,7 +73,7 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
                 Long userId = resultSet.getLong("user_id");
                 Date sqlDate = resultSet.getDate("date");
                 order = new Order(orderId);
-                User user = userDao.get(userId);
+                User user = userDao.get(userId).get();
                 LocalDate localDate = sqlDate.toLocalDate();
                 List<Item> items = getAllItems(orderId);
                 order.setUser(user);

@@ -32,7 +32,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public User add(User user) {
+    public Optional<User> add(User user) {
         String query = "INSERT INTO users "
                 + "(name, surname, login, password, salt, token) VALUES (?, ?, ?, ?, ?, ?);";
         try (PreparedStatement statement
@@ -54,13 +54,13 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             }
         } catch (SQLException e) {
             logger.error("Can't create user", e);
-            return null;
+            return Optional.empty();
         }
-        return user;
+        return Optional.of(user);
     }
 
     @Override
-    public User get(Long id) {
+    public Optional<User> get(Long id) {
         User user = null;
         String query = "SELECT * FROM users WHERE user_id = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -77,12 +77,13 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             }
         } catch (SQLException e) {
             logger.error("Get user by id error", e);
+            return Optional.empty();
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override
-    public User update(User user) {
+    public Optional<User> update(User user) {
         String query = "UPDATE users "
                 + "SET name = ?, surname = ?, login = ?, password = ? "
                 + "WHERE (user_id = ?);";
@@ -96,9 +97,9 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't update user", e);
-            return null;
+            return Optional.empty();
         }
-        return user;
+        return Optional.of(user);
     }
 
     @Override
@@ -135,7 +136,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public User login(String login, String password) throws AuthenticationException {
+    public Optional<User> login(String login, String password) throws AuthenticationException {
         User user = null;
         String query = "SELECT * FROM users WHERE login = ? AND password = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -156,8 +157,9 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             }
         } catch (SQLException e) {
             logger.error("Checking login or password error", e);
+            throw new AuthenticationException("Incorrect login or password");
         }
-        return user;
+        return Optional.of(user);
     }
 
     @Override

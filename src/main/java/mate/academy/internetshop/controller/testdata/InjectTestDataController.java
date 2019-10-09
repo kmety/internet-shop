@@ -11,6 +11,7 @@ import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.ItemService;
+import mate.academy.internetshop.service.RoleService;
 import mate.academy.internetshop.service.UserService;
 import mate.academy.internetshop.util.HashUtil;
 import org.apache.log4j.Logger;
@@ -21,6 +22,8 @@ public class InjectTestDataController extends HttpServlet {
     private static UserService userService;
     @Inject
     private static ItemService itemService;
+    @Inject
+    private static RoleService roleService;
 
     @Override
     public void init() throws ServletException {
@@ -79,7 +82,8 @@ public class InjectTestDataController extends HttpServlet {
         admin.setPassword(HashUtil.hashPassword("1", adminSalt));
         admin.setSalt(new String(adminSalt));
         admin.setToken(UUID.randomUUID().toString());
-        admin.addRole(Role.of("ADMIN"));
+        Role roleAdmin = roleService.getRoleByName("ADMIN").get();
+        admin.addRole(roleAdmin);
         userService.add(admin);
 
         User user1 = new User();
@@ -90,7 +94,8 @@ public class InjectTestDataController extends HttpServlet {
         user1.setPassword(HashUtil.hashPassword("1", user1Salt));
         user1.setSalt(new String(user1Salt));
         user1.setToken(UUID.randomUUID().toString());
-        user1.addRole(Role.of("USER"));
+        Role role1 = roleService.getRoleByName("USER").get();
+        user1.addRole(role1);
         userService.add(user1);
 
         User user2 = new User();
@@ -101,7 +106,8 @@ public class InjectTestDataController extends HttpServlet {
         user2.setPassword(HashUtil.hashPassword("1", user2Salt));
         user2.setSalt(new String(user2Salt));
         user2.setToken(UUID.randomUUID().toString());
-        user2.addRole(Role.of("USER"));
+        Role role2 = roleService.getRoleByName("USER").get();
+        user2.addRole(role2);
         userService.add(user2);
     }
 

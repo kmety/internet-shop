@@ -3,8 +3,6 @@ package mate.academy.internetshop.dao.hibernate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Item;
@@ -12,6 +10,7 @@ import mate.academy.internetshop.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class ItemDaoHibernateImpl implements ItemDao {
@@ -79,14 +78,14 @@ public class ItemDaoHibernateImpl implements ItemDao {
 
     @Override
     public List<Item> getAll() {
+        List<Item> items;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Item> criteria = builder.createQuery(Item.class);
-            criteria.from(Item.class);
-            return session.createQuery(criteria).getResultList();
+            Query query = session.createQuery("from Item");
+            items = query.list();
         } catch (Exception e) {
             logger.error("Can't get items list", e);
             return new ArrayList<>();
         }
+        return items;
     }
 }

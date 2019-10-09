@@ -6,17 +6,17 @@ import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.model.User;
 
 public interface UserDao {
-    User add(User user);
+    Optional<User> add(User user);
 
-    User get(Long id);
+    Optional<User> get(Long id);
 
-    User update(User user);
+    Optional<User> update(User user);
 
     void delete(Long id);
 
     List<User> getAll();
 
-    User login(String login, String password)
+    Optional<User> login(String login, String password)
             throws AuthenticationException;
 
     Optional<User> getByToken(String token);
