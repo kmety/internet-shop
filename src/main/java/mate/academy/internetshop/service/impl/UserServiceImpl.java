@@ -21,10 +21,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> add(User user) {
-        User newUser = userDao.add(user).get();
-        Bucket bucket = new Bucket(newUser);
-        bucketDao.add(bucket);
-        return Optional.of(newUser);
+        user = userDao.add(user).get();
+        Bucket bucket = new Bucket(user);
+        bucket = bucketDao.add(bucket);
+        user.setBucket(bucket);
+        return Optional.of(user);
     }
 
     @Override
