@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> update(User user) {
+    public User update(User user) {
         return userDao.update(user);
     }
 
@@ -54,9 +54,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> login(String login, String password)
+    public User login(String login, String password)
             throws AuthenticationException {
-        return userDao.login(login, password);
+        User user = userDao.getUserByLogin(login)
+                .orElseThrow(() -> new AuthenticationException("Invalid login or password"));
+        if (user.getPassword().equals(password)) {
+            return user;
+        } else {
+            throw new AuthenticationException("Invalid login or password");
+        }
     }
 
     @Override

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.dao.UserDao;
-import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.util.HibernateUtil;
@@ -20,14 +19,20 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public Optional<User> add(User user) {
         Transaction transaction = null;
+        Session session = null;
         Long userFromDbId;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             userFromDbId = (Long) session.save(user);
             transaction.commit();
+            session.close();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
+            }
+            if (session != null) {
+                session.close();
             }
             logger.error("Can't add user", e);
             return Optional.empty();
@@ -46,7 +51,7 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> update(User user) {
+    public User update(User user) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -57,9 +62,9 @@ public class UserDaoHibernateImpl implements UserDao {
                 transaction.rollback();
             }
             logger.error("Can't update user", e);
-            return Optional.empty();
+            return null;
         }
-        return get(user.getId());
+        return get(user.getId()).get();
     }
 
     @Override
@@ -93,15 +98,12 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> login(String login, String password) throws AuthenticationException {
+    public Optional<User> getUserByLogin(String login) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery("from User where login=:login");
             query.setParameter("login", login);
             User user = (User) query.uniqueResult();
-            if (user.getPassword().equals(password)) {
-                return Optional.of(user);
-            }
-            throw new AuthenticationException("Incorrect login or password");
+            return Optional.ofNullable(user);
         }
     }
 

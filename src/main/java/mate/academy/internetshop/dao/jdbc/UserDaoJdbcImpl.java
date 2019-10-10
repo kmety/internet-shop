@@ -11,7 +11,6 @@ import java.util.Optional;
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.dao.UserDao;
-import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
@@ -83,7 +82,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public Optional<User> update(User user) {
+    public User update(User user) {
         String query = "UPDATE users "
                 + "SET name = ?, surname = ?, login = ?, password = ? "
                 + "WHERE (user_id = ?);";
@@ -97,9 +96,9 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't update user", e);
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(user);
+        return user;
     }
 
     @Override
@@ -136,12 +135,11 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public Optional<User> login(String login, String password) throws AuthenticationException {
+    public Optional<User> getUserByLogin(String login) {
         User user = null;
-        String query = "SELECT * FROM users WHERE login = ? AND password = ?;";
+        String query = "SELECT * FROM users WHERE login = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, login);
-            statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = new User();
@@ -152,14 +150,12 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setToken(resultSet.getString("token"));
                 Bucket bucket = bucketDao.getBucketByUserId(user.getId());
                 user.setBucket(bucket);
-            } else {
-                throw new AuthenticationException("Incorrect login or password");
             }
         } catch (SQLException e) {
-            logger.error("Checking login or password error", e);
-            throw new AuthenticationException("Incorrect login or password");
+            logger.error("Can't get user by login", e);
+            return Optional.empty();
         }
-        return Optional.of(user);
+        return Optional.ofNullable(user);
     }
 
     @Override

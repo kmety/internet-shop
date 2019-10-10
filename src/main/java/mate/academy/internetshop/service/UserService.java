@@ -11,7 +11,7 @@ public interface UserService {
 
     Optional<User> get(Long id);
 
-    Optional<User> update(User user);
+    User update(User user);
 
     void delete(Long id);
 
@@ -19,7 +19,7 @@ public interface UserService {
 
     List<User> getAll();
 
-    Optional<User> login(String login, String password) throws AuthenticationException;
+    User login(String login, String password) throws AuthenticationException;
 
     Optional<User> getByToken(String token);
 

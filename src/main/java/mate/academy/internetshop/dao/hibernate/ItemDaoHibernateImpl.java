@@ -63,7 +63,9 @@ public class ItemDaoHibernateImpl implements ItemDao {
     @Override
     public void delete(Long id) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             Item item = new Item(id);
             session.delete(item);
@@ -73,6 +75,10 @@ public class ItemDaoHibernateImpl implements ItemDao {
                 transaction.rollback();
             }
             logger.error("Can't delete item", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 

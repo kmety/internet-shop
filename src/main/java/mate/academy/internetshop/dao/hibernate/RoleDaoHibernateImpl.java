@@ -1,6 +1,5 @@
 package mate.academy.internetshop.dao.hibernate;
 
-import java.math.BigInteger;
 import java.util.Optional;
 import java.util.Set;
 import mate.academy.internetshop.dao.RoleDao;
@@ -33,15 +32,19 @@ public class RoleDaoHibernateImpl implements RoleDao {
 
     @Override
     public Optional<Role> getRoleByName(String name) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String stringQuery
-                    = String.format("SELECT role_id FROM role WHERE role_name = '%s'", name);
-            Query query = session.createSQLQuery(stringQuery);
-            BigInteger roleId = (BigInteger) query.uniqueResult();
-            Role role = Role.of(name);
-            role.setId(roleId.longValue());
-            return Optional.of(role);
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createQuery("from Role where roleName=:role");
+            Role.RoleName roleName = Role.of(name).getRoleName();
+            query.setParameter("role", roleName);
+            Role role = (Role) query.uniqueResult();
+            session.close();
+            return Optional.ofNullable(role);
         } catch (Exception e) {
+            if (session != null) {
+                session.close();
+            }
             logger.error("Can't get role by name", e);
             return Optional.empty();
         }

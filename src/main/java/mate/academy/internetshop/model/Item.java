@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import mate.academy.internetshop.idgenerators.ItemIdGenerator;
 
 @Entity
 @Table(name = "items")
@@ -25,7 +24,6 @@ public class Item {
     }
 
     public Item(String name, Double price) {
-        this.id = ItemIdGenerator.generateId();
         this.name = name;
         this.price = price;
     }

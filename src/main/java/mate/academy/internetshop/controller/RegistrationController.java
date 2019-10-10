@@ -1,6 +1,7 @@
 package mate.academy.internetshop.controller;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -42,9 +43,15 @@ public class RegistrationController extends HttpServlet {
         user.setPassword(hashedPassword);
         user.setSalt(new String(salt));
         user.setToken(UUID.randomUUID().toString());
-        Role role = roleService.getRoleByName("USER").get();
-        user.addRole(role);
-        user = userService.add(user).get();
+        try {
+            Role role = roleService.getRoleByName("USER").orElseThrow(NoSuchElementException::new);
+            user.addRole(role);
+            user = userService.add(user).orElseThrow(NoSuchElementException::new);
+        } catch (NoSuchElementException e) {
+            logger.error(e);
+            resp.sendRedirect(req.getContextPath() + "/shop");
+            return;
+        }
         Cookie cookie = new Cookie("MATE", user.getToken());
         resp.addCookie(cookie);
         HttpSession session = req.getSession(true);
