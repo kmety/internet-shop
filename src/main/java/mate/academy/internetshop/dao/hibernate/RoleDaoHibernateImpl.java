@@ -33,20 +33,20 @@ public class RoleDaoHibernateImpl implements RoleDao {
     @Override
     public Optional<Role> getRoleByName(String name) {
         Session session = null;
+        Role role = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             Query query = session.createQuery("from Role where roleName=:role");
             Role.RoleName roleName = Role.of(name).getRoleName();
             query.setParameter("role", roleName);
-            Role role = (Role) query.uniqueResult();
-            session.close();
-            return Optional.ofNullable(role);
+            role = (Role) query.uniqueResult();
         } catch (Exception e) {
+            logger.error("Can't get role by name", e);
+        } finally {
             if (session != null) {
                 session.close();
             }
-            logger.error("Can't get role by name", e);
-            return Optional.empty();
         }
+        return Optional.ofNullable(role);
     }
 }

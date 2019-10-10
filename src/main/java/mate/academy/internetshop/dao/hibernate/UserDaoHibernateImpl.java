@@ -26,18 +26,19 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction = session.beginTransaction();
             userFromDbId = (Long) session.save(user);
             transaction.commit();
-            session.close();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            logger.error("Can't add user", e);
+            return Optional.empty();
+        } finally {
             if (session != null) {
                 session.close();
             }
-            logger.error("Can't add user", e);
-            return Optional.empty();
         }
-        return get(userFromDbId);
+        user.setId(userFromDbId);
+        return Optional.of(user);
     }
 
     @Override
@@ -53,7 +54,9 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public User update(User user) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(user);
             transaction.commit();
@@ -62,15 +65,20 @@ public class UserDaoHibernateImpl implements UserDao {
                 transaction.rollback();
             }
             logger.error("Can't update user", e);
-            return null;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
-        return get(user.getId()).get();
+        return user;
     }
 
     @Override
     public void delete(Long id) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             User user = new User();
             user.setId(id);
             transaction = session.beginTransaction();
@@ -81,6 +89,10 @@ public class UserDaoHibernateImpl implements UserDao {
                 transaction.rollback();
             }
             logger.error("Can't delete user", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 

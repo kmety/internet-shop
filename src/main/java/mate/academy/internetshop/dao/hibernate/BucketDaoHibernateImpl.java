@@ -28,24 +28,24 @@ public class BucketDaoHibernateImpl implements BucketDao {
     public Bucket add(Bucket bucket) {
         Transaction transaction = null;
         Session session = null;
-        Long bucketFromDbId;
+        Long bucketFromDbId = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             bucketFromDbId = (Long) session.save(bucket);
             transaction.commit();
-            session.close();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            logger.error("Can't add bucket", e);
+        } finally {
             if (session != null) {
                 session.close();
             }
-            logger.error("Can't add bucket", e);
-            return null;
         }
-        return get(bucketFromDbId).get();
+        bucket.setId(bucketFromDbId);
+        return bucket;
     }
 
     @Override
@@ -70,16 +70,15 @@ public class BucketDaoHibernateImpl implements BucketDao {
             bucket.getItems().add(item);
             session.update(bucket);
             transaction.commit();
-            session.close();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            logger.error("Can't add item into bucket", e);
+        } finally {
             if (session != null) {
                 session.close();
             }
-            logger.error("Can't add item into bucket", e);
-            return null;
         }
         return bucket;
     }
@@ -90,7 +89,7 @@ public class BucketDaoHibernateImpl implements BucketDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             bucket = get(bucket.getId()).orElseThrow(() -> new Exception("Bucket is absent"));
-            bucket.getItems().clear();
+            bucket.setItems(new ArrayList<>());
             session.update(bucket);
         } catch (Exception e) {
             logger.error("Can't clear bucket", e);
@@ -99,7 +98,7 @@ public class BucketDaoHibernateImpl implements BucketDao {
                 session.close();
             }
         }
-        return get(bucket.getId()).get();
+        return bucket;
     }
 
     @Override
@@ -124,15 +123,15 @@ public class BucketDaoHibernateImpl implements BucketDao {
             bucket.getItems().remove(item);
             session.update(bucket);
             transaction.commit();
-            session.close();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            logger.error("Can't delete item", e);
+        } finally {
             if (session != null) {
                 session.close();
             }
-            logger.error("Can't delete item", e);
         }
     }
 
