@@ -28,7 +28,7 @@ public class EditItemController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Long itemId = Long.parseLong(req.getParameter("item_id"));
         String name = req.getParameter("name");
-        double price = -1.;
+        double price;
         try {
             price = Double.parseDouble(req.getParameter("price"));
         } catch (NumberFormatException e) {

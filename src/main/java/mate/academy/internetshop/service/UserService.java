@@ -7,9 +7,9 @@ import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
 
 public interface UserService {
-    User add(User user);
+    Optional<User> add(User user);
 
-    User get(Long id);
+    Optional<User> get(Long id);
 
     User update(User user);
 

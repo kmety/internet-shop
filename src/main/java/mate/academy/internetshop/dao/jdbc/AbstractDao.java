@@ -2,7 +2,7 @@ package mate.academy.internetshop.dao.jdbc;
 
 import java.sql.Connection;
 
-public class AbstractDao<T> {
+public abstract class AbstractDao<T> {
     protected final Connection connection;
 
     public AbstractDao(Connection connection) {

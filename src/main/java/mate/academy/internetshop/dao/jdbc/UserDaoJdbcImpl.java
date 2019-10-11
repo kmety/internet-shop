@@ -11,7 +11,6 @@ import java.util.Optional;
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.dao.UserDao;
-import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
@@ -32,7 +31,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public User add(User user) {
+    public Optional<User> add(User user) {
         String query = "INSERT INTO users "
                 + "(name, surname, login, password, salt, token) VALUES (?, ?, ?, ?, ?, ?);";
         try (PreparedStatement statement
@@ -54,13 +53,13 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             }
         } catch (SQLException e) {
             logger.error("Can't create user", e);
-            return null;
+            return Optional.empty();
         }
-        return user;
+        return Optional.of(user);
     }
 
     @Override
-    public User get(Long id) {
+    public Optional<User> get(Long id) {
         User user = null;
         String query = "SELECT * FROM users WHERE user_id = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -77,8 +76,9 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             }
         } catch (SQLException e) {
             logger.error("Get user by id error", e);
+            return Optional.empty();
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override
@@ -135,12 +135,11 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public User login(String login, String password) throws AuthenticationException {
+    public Optional<User> getUserByLogin(String login) {
         User user = null;
-        String query = "SELECT * FROM users WHERE login = ? AND password = ?;";
+        String query = "SELECT * FROM users WHERE login = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, login);
-            statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = new User();
@@ -151,13 +150,12 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 user.setToken(resultSet.getString("token"));
                 Bucket bucket = bucketDao.getBucketByUserId(user.getId());
                 user.setBucket(bucket);
-            } else {
-                throw new AuthenticationException("Incorrect login or password");
             }
         } catch (SQLException e) {
-            logger.error("Checking login or password error", e);
+            logger.error("Can't get user by login", e);
+            return Optional.empty();
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override

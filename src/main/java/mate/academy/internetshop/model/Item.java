@@ -1,12 +1,12 @@
 package mate.academy.internetshop.model;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import mate.academy.internetshop.idgenerators.ItemIdGenerator;
 
 @Entity
 @Table(name = "items")
@@ -20,17 +20,16 @@ public class Item {
     @Column(columnDefinition = "DECIMAL")
     private Double price;
 
+    public Item() {
+    }
+
     public Item(String name, Double price) {
-        this.id = ItemIdGenerator.generateId();
         this.name = name;
         this.price = price;
     }
 
     public Item(Long id) {
         this.id = id;
-    }
-
-    public Item() {
     }
 
     public void setId(Long id) {
@@ -60,5 +59,24 @@ public class Item {
     @Override
     public String toString() {
         return "Item: " + name + ", " + price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Item item = (Item) o;
+        return Objects.equals(id, item.id)
+                && Objects.equals(name, item.name)
+                && Objects.equals(price, item.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price);
     }
 }

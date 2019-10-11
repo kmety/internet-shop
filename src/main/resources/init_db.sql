@@ -1,5 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS internetshop;
-
+USE internetshop;
 CREATE TABLE IF NOT EXISTS `items` (
   `item_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` VARCHAR(255) NOT NULL,
   `salt` VARCHAR(255) NOT NULL,
   `token` VARCHAR(45) NULL,
-  PRIMARY KEY (`user_id`));
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `login_UNIQUE` (`login` ASC) VISIBLE);
 
 CREATE TABLE `orders` (
   `order_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
@@ -59,8 +60,9 @@ CREATE TABLE IF NOT EXISTS `bucket` (
 
 CREATE TABLE IF NOT EXISTS `role` (
   `role_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
-  `role_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`role_id`));
+  `role_name` VARCHAR(16) NOT NULL,
+  PRIMARY KEY (`role_id`),
+  UNIQUE INDEX `name_UNIQUE` (`role_name` ASC) VISIBLE);
 
 CREATE TABLE IF NOT EXISTS `user_role` (
   `user_role_id` BIGINT(10) NOT NULL AUTO_INCREMENT,

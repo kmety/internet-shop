@@ -20,15 +20,16 @@ public class UserServiceImpl implements UserService {
     private static BucketDao bucketDao;
 
     @Override
-    public User add(User user) {
-        User newUser = userDao.add(user);
-        Bucket bucket = bucketDao.add(newUser.getBucket());
-        newUser.setBucket(bucket);
-        return newUser;
+    public Optional<User> add(User user) {
+        user = userDao.add(user).get();
+        Bucket bucket = new Bucket(user);
+        bucket = bucketDao.add(bucket);
+        user.setBucket(bucket);
+        return Optional.of(user);
     }
 
     @Override
-    public User get(Long id) {
+    public Optional<User> get(Long id) {
         return userDao.get(id);
     }
 
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Order> getOrders(User user) {
-        return userDao.get(user.getId()).getOrders();
+        return userDao.get(user.getId()).get().getOrders();
     }
 
     @Override
@@ -55,7 +56,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String login, String password)
             throws AuthenticationException {
-        return userDao.login(login, password);
+        User user = userDao.getUserByLogin(login)
+                .orElseThrow(() -> new AuthenticationException("Invalid login or password"));
+        if (user.getPassword().equals(password)) {
+            return user;
+        } else {
+            throw new AuthenticationException("Invalid login or password");
+        }
     }
 
     @Override
