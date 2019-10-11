@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.lib.Dao;
@@ -62,7 +63,7 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
     }
 
     @Override
-    public Order get(Long id) {
+    public Optional<Order> get(Long id) {
         String query = "SELECT * FROM orders WHERE order_id = ?;";
         Order order = null;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -82,8 +83,9 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
             }
         } catch (SQLException e) {
             logger.error("Get order by id error", e);
+            return Optional.empty();
         }
-        return order;
+        return Optional.ofNullable(order);
     }
 
     @Override
@@ -131,7 +133,7 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Long orderId = resultSet.getLong("order_id");
-                orders.add(get(orderId));
+                orders.add(get(orderId).get());
             }
         } catch (SQLException e) {
             logger.error("getOrdersByUserId error", e);
