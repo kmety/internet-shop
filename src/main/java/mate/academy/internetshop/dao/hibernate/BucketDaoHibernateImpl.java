@@ -103,11 +103,12 @@ public class BucketDaoHibernateImpl implements BucketDao {
 
     @Override
     public List<Item> getAllItems(Long bucketId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Bucket bucket = get(bucketId).get();
+        try {
+            Bucket bucket = get(bucketId).orElseThrow(
+                    () -> new Exception("Can't get all items from bucket"));
             return bucket.getItems();
         } catch (Exception e) {
-            logger.error("Can't get all items from bucket", e);
+            logger.error(e);
             return new ArrayList<>();
         }
     }

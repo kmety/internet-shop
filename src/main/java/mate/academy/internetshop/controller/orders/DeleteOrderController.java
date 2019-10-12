@@ -5,12 +5,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.model.Order;
-import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.UserService;
+import org.apache.log4j.Logger;
 
 public class DeleteOrderController extends HttpServlet {
+    private static Logger logger = Logger.getLogger(DeleteOrderController.class);
     @Inject
     private static OrderService orderService;
     @Inject
@@ -19,12 +19,9 @@ public class DeleteOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        User userFromSession = (User) req.getSession().getAttribute("loggedInUser");
-        User user = userService.get(userFromSession.getId()).get();
         Long orderId = Long.parseLong(req.getParameter("order_id"));
-        Order order = orderService.get(orderId);
         orderService.delete(orderId);
-        user.getOrders().remove(order);
+
         resp.sendRedirect(req.getContextPath() + "/user/showAllOrders");
     }
 }
