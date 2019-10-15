@@ -23,7 +23,7 @@ public class RoleDaoJdbcImpl extends AbstractDao<Role> implements RoleDao {
     }
 
     @Override
-    public boolean attachRole(User user) {
+    public void attachRole(User user) {
         String role = user.getRoles().stream().findAny().get().toString();
         Long userId = user.getId();
         Long roleId = null;
@@ -36,7 +36,7 @@ public class RoleDaoJdbcImpl extends AbstractDao<Role> implements RoleDao {
             }
         } catch (SQLException e) {
             logger.error("Can't get role_id", e);
-            return false;
+            return;
         }
         String attachRoleQuery = "INSERT INTO user_role (user_id, role_id) VALUES (?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(attachRoleQuery)) {
@@ -45,9 +45,7 @@ public class RoleDaoJdbcImpl extends AbstractDao<Role> implements RoleDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Can't attach role to user", e);
-            return false;
         }
-        return true;
     }
 
     @Override
@@ -75,6 +73,7 @@ public class RoleDaoJdbcImpl extends AbstractDao<Role> implements RoleDao {
 
     @Override
     public Optional<Role> getRoleByName(String name) {
+        //This method is in use only in hibernate implementation
         return Optional.empty();
     }
 }

@@ -20,8 +20,8 @@ public class RoleDaoHibernateImpl implements RoleDao {
     private static Logger logger = Logger.getLogger(RoleDaoHibernateImpl.class);
 
     @Override
-    public boolean attachRole(User user) {
-        return false;
+    public void attachRole(User user) {
+        //This method is in use only in jdbc implementation
     }
 
     @Override
