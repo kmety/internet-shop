@@ -6,7 +6,7 @@ import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 
 public interface RoleDao {
-    boolean attachRole(User user);
+    void attachRole(User user);
 
     Set<Role> getRoles(User user);
 

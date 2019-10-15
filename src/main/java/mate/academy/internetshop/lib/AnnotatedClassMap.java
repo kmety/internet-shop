@@ -14,7 +14,7 @@ import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.RoleService;
 import mate.academy.internetshop.service.UserService;
 
-public class AnnotatedClassMap {
+class AnnotatedClassMap {
     private static final Map<Class, Object> classMap = new HashMap<>();
 
     static {
@@ -30,7 +30,7 @@ public class AnnotatedClassMap {
         classMap.put(RoleService.class, Factory.getRoleService());
     }
 
-    public static Object getImplementation(Class interfaceClass) {
+    static Object getImplementation(Class interfaceClass) {
         return classMap.get(interfaceClass);
     }
 }
