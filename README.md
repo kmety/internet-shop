@@ -31,3 +31,4 @@ This is a training project. It's aim is to improve my programming skills, deepen
 6. Change hibernate.cfg.xml file, set your login and password
 7. Change Factory.class, set your login and password in DriverManager.getConnection() method
 8. Change log4j.properties, set new link for internetshop.log file in your computer
+9. You may login in the app either via using precreated users or by creating new user. There are 3 precreated users with "u1, 1", "u2, 1", "admin, 1" logins and passwords.
