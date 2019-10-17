@@ -48,7 +48,7 @@ public class RegistrationController extends HttpServlet {
             user.addRole(role);
             user = userService.add(user).orElseThrow(NoSuchElementException::new);
         } catch (NoSuchElementException e) {
-            logger.error(e);
+            logger.error("No role found", e);
             resp.sendRedirect(req.getContextPath() + "/shop");
             return;
         }

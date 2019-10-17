@@ -44,7 +44,7 @@ public class LoginController extends HttpServlet {
             req.setAttribute("authFailedMessage", e.getMessage());
             req.setAttribute("prevLogin", login);
             req.setAttribute("prevPsw", password);
-            logger.error(e);
+            logger.error("User authentication failed", e);
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
         }
     }

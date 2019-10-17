@@ -57,7 +57,6 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.4.5.Final</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
@@ -68,7 +67,6 @@
                     <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -104,5 +102,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
 </project>

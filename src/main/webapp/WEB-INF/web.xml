@@ -188,7 +188,6 @@
         <welcome-file>index</welcome-file>
     </welcome-file-list>
 
-
     <listener>
         <listener-class>mate.academy.internetshop.controller.InjectorInitializer</listener-class>
     </listener>
