@@ -26,14 +26,15 @@ public class AddToBucketController extends HttpServlet {
             throws IOException {
         User user = (User) req.getSession().getAttribute("loggedInUser");
         try {
-            Optional<Bucket> bucketOptional = bucketService.get(user.getBucket().getId());
+            Long bucketId = user.getBucket().getId();
+            Optional<Bucket> bucketOptional = bucketService.get(bucketId);
             Bucket bucket = bucketOptional.orElseThrow(()
                     -> new ItemNotFoundException("No bucked returned"));
             Long itemId = Long.parseLong(req.getParameter("item_id"));
             Item item = itemService.get(itemId).get();
             bucketService.addItem(bucket, item);
         } catch (ItemNotFoundException e) {
-            logger.error(e);
+            logger.error("No bucket found", e);
         }
         resp.sendRedirect(req.getContextPath() + "/shop");
     }

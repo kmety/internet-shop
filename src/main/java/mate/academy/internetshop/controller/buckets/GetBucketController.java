@@ -25,7 +25,8 @@ public class GetBucketController extends HttpServlet {
             throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("loggedInUser");
         try {
-            Optional<Bucket> bucketOptional = bucketService.get(user.getBucket().getId());
+            Long bucketId = user.getBucket().getId();
+            Optional<Bucket> bucketOptional = bucketService.get(bucketId);
             Bucket bucket = bucketOptional.orElseThrow(()
                     -> new ItemNotFoundException("No bucket returned"));
             req.setAttribute("bucket", bucket);
@@ -33,7 +34,7 @@ public class GetBucketController extends HttpServlet {
             double totalCost = items.stream().mapToDouble(Item::getPrice).sum();
             req.setAttribute("totalCost", totalCost);
         } catch (ItemNotFoundException e) {
-            logger.error(e);
+            logger.error("No bucket found", e);
         }
         req.getRequestDispatcher("../WEB-INF/views/bucket.jsp").forward(req, resp);
     }
